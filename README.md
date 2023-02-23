@@ -1,4 +1,4 @@
-# My redboard testing repo
+# My redboard repo
 some programs that i ran on a redboard
 
 ## includes
