@@ -28,7 +28,7 @@ void setup()
 
   myLog.syncFile(); // Write to card
 
-  Serial.println()
+  Serial.println();
 }
 
 void loop()
