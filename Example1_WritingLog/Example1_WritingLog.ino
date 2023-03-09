@@ -3,6 +3,8 @@
 OpenLog fileReadWrite; // Create instance
 String File = "HEVHELLO.txt"; // Name of text file
 
+//William is a great student who always does his work
+
 void setup()
 {
   Wire.begin(); //Initialize I2C
