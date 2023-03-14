@@ -20,10 +20,10 @@ void setup()
   long sizeOfFile = fileReadWrite.size(File);
 
   if (sizeOfFile == -1) // Check if file exists. if size > -1 it exists but may be empty.
-  {  
+  {  // File didn't exist.
     fileReadWrite.create("HEVHELLO.txt");
     fileReadWrite.println("Welcome to the HEV mark 4 hazardous environment suit");
-  } else {
+  } else { // File existed prior to script running
     fileReadWrite.append("HEVHELLO.txt");
     fileReadWrite.println("Injecting Morphine");
   }
