@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include "SparkFun_Qwiic_OpenLog_Arduino_Library.h"
 #include <SparkFun_LPS25HB_Arduino_Library.h> // Import the pressure sensor library
-LPS25HB pressureSensor; // Create the object for the LPS25HB
+LPS25HB basicSensor; // Create the object for the LPS25HB
 OpenLog logFile;         // Create instance
 String File = "LPS25HB.txt";  // Name of text file
 String Dir = "WW-17237-Dir";
@@ -10,13 +10,12 @@ void setup() {
   Serial.begin(9600);
   Wire.begin();
   logFile.begin();  //Open connection to OpenLog
-  pressureSensor.begin(); // links to I2C port for the sensor
+  basicSensor.begin(); // links to I2C port for the sensor
 
-  if (pressureSensor.isConnected() == false) // Check the sensor is present
+  if (basicSensor.isConnected() == false) // Check the sensor is present
   {
     Serial.println("LPS25HB disconnected. Reset the board to try again.");
-    while (1)
-      ;
+    while (1);
   }
 
 
@@ -41,11 +40,12 @@ void setup() {
 
 void loop()
 {
-  while(pressureSensor.isConnected() == true) {
+  while(basicSensor.isConnected() == true) {
     logFile.println("Pressure in hPa: ");
-    logFile.println(pressureSensor.getPressure_hPa()); // Get the pressure reading in hPa
-    logFile.println(", Temperature (degC): ");
-    logFile.println(pressureSensor.getTemperature_degC()); // Get the temperature in degrees C
+    logFile.println(basicSensor.getPressure_hPa()); // Get the pressure reading in hPa
+    logFile.println(", ");
+    logFile.println(basicSensor.getTemperature_degC()); // Get the temperature in degrees C
     delay(40); // Wait - 40 ms corresponds to the maximum update rate of the sensor (25 Hz)
+    logFile.syncFile();  // Write to card
   }
 }
