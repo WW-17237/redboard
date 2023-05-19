@@ -5,3 +5,4 @@ some programs that i ran on a redboard
 * Flashing light
 * Timer with flashing light
 * Openlog script that writes to a file saying its the hev suit from half life
+* LPS25HB pressure sensor script
