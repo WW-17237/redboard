@@ -14,7 +14,7 @@ void setup() {
 
   if (pressureSensor.isConnected() == false) // Check the sensor is present
   {
-    Serial.println("LPS25HB disconnected. Reset the board to try again.");
+    Serial.println("What did you do this time the LPS25HB pressure sensor disconnected.");
     while (1)
       ;
   }
