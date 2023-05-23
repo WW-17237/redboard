@@ -1,11 +1,20 @@
 #include <Wire.h>
 #include "SparkFun_Qwiic_OpenLog_Arduino_Library.h"
 #include <SparkFun_LPS25HB_Arduino_Library.h> // Import the pressure sensor library
+<<<<<<< HEAD
 LPS25HB basicSensor; // Create the object for the LPS25HB
-OpenLog logFile;         // Create instance
-String File = "LPS25HB.txt";  // Name of text file
-String Dir = "WW-17237-Dir";
+=======
 
+
+//HAN NOTES and what does creating an object let us do?
+LPS25HB pressureSensor; // Create the object for the LPS25HB
+>>>>>>> f6e04abc0a16fccdab8b11c1db0270b31a5f3af5
+OpenLog logFile;         // Create instance
+//HAN NOTES merit ticks for descriptive names remember
+String File = "LPS25HB.txt";  // Name of text file
+String Dir = "WW-17237-Dir"; 
+
+//HAN NOTES can you explain what this method is doing?
 void setup() {
   Serial.begin(9600);
   Wire.begin();
