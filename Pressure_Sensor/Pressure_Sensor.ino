@@ -1,39 +1,35 @@
 #include <Wire.h>
-#include "SparkFun_Qwiic_OpenLog_Arduino_Library.h"
+#include "SparkFun_Qwiic_OpenLog_Arduino_Library.h" // Import the sd card reader library
 #include <SparkFun_LPS25HB_Arduino_Library.h> // Import the pressure sensor library
-<<<<<<< HEAD
+#include "ICM_20948.h" // Import the gyroscope library
+#include <Servo.h> // import the library required for servos
+
 LPS25HB basicSensor; // Create the object for the LPS25HB
-=======
-
-
+ICM_20948_I2C gyro; // create an gyro object
+Servo chuteMotor;  // create servo object for control
 //HAN NOTES and what does creating an object let us do?
-LPS25HB pressureSensor; // Create the object for the LPS25HB
->>>>>>> f6e04abc0a16fccdab8b11c1db0270b31a5f3af5
 OpenLog logFile;         // Create instance
 //HAN NOTES merit ticks for descriptive names remember
-String File = "LPS25HB.txt";  // Name of text file
+String File = "data.txt";  // Name of text file
 String Dir = "WW-17237-Dir"; 
+const byte SRVPIN = 9;
+int pos = 0;    // store the servo's position
 
 //HAN NOTES can you explain what this method is doing?
+// this method is triggered on startup
 void setup() {
   Serial.begin(9600);
   Wire.begin();
   logFile.begin();  //Open connection to OpenLog
   basicSensor.begin(); // links to I2C port for the sensor
+  chuteMotor.attach(SRVPIN);  // attaches the servo on pin byte (SRVPIN)
 
-<<<<<<< HEAD
-  if (basicSensor.isConnected() == false) // Check the sensor is present
-  {
-    Serial.println("LPS25HB disconnected. Reset the board to try again.");
-    while (1);
-=======
   //HAN NOTES what is this if statement for?
-  if (pressureSensor.isConnected() == false) // Check the sensor is present
+  // Check the sensor is present
+  if (basicSensor.isConnected() == false)
   {
-    Serial.println("What did you do this time the LPS25HB pressure sensor disconnected.");
-    while (1)
-      ;
->>>>>>> f6e04abc0a16fccdab8b11c1db0270b31a5f3af5
+    Serial.println("What did you do this time the pressure sensor is disconnected.");
+    while(1);
   }
 
 
@@ -57,6 +53,7 @@ void setup() {
 }
 
 //HAN NOTES can you explain what this method is doing?
+// this method loops all the code within running it all in sequence
 void loop()
 {
   while(basicSensor.isConnected() == true) {
