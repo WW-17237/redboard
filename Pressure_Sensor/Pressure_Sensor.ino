@@ -12,10 +12,19 @@ void setup() {
   logFile.begin();  //Open connection to OpenLog
   basicSensor.begin(); // links to I2C port for the sensor
 
+<<<<<<< HEAD
   if (basicSensor.isConnected() == false) // Check the sensor is present
   {
     Serial.println("LPS25HB disconnected. Reset the board to try again.");
     while (1);
+=======
+  //HAN NOTES what is this if statement for?
+  if (pressureSensor.isConnected() == false) // Check the sensor is present
+  {
+    Serial.println("What did you do this time the LPS25HB pressure sensor disconnected.");
+    while (1)
+      ;
+>>>>>>> f6e04abc0a16fccdab8b11c1db0270b31a5f3af5
   }
 
 
@@ -38,6 +47,7 @@ void setup() {
   logFile.syncFile();  // Write to card
 }
 
+//HAN NOTES can you explain what this method is doing?
 void loop()
 {
   while(basicSensor.isConnected() == true) {
@@ -48,4 +58,7 @@ void loop()
     delay(40); // Wait - 40 ms corresponds to the maximum update rate of the sensor (25 Hz)
     logFile.syncFile();  // Write to card
   }
+    //HAN NOTES some note for when the pressuresensor is not connected or disconnects could go here
+  //NB that we are already in the loop method that will repeat itself and will need to move a servo at a specific time/pressure at some point
 }
+//HAN NOTES Now try and add in the servo code, and then the IMU example code...
