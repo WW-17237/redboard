@@ -1,17 +1,23 @@
 #include <Wire.h>
 #include "SparkFun_Qwiic_OpenLog_Arduino_Library.h"
 #include <SparkFun_LPS25HB_Arduino_Library.h> // Import the pressure sensor library
+
+
+//HAN NOTES and what does creating an object let us do?
 LPS25HB pressureSensor; // Create the object for the LPS25HB
 OpenLog logFile;         // Create instance
+//HAN NOTES merit ticks for descriptive names remember
 String File = "LPS25HB.txt";  // Name of text file
-String Dir = "WW-17237-Dir";
+String Dir = "WW-17237-Dir"; 
 
+//HAN NOTES can you explain what this method is doing?
 void setup() {
   Serial.begin(9600);
   Wire.begin();
   logFile.begin();  //Open connection to OpenLog
   pressureSensor.begin(); // links to I2C port for the sensor
 
+  //HAN NOTES what is this if statement for?
   if (pressureSensor.isConnected() == false) // Check the sensor is present
   {
     Serial.println("What did you do this time the LPS25HB pressure sensor disconnected.");
@@ -39,6 +45,7 @@ void setup() {
   logFile.syncFile();  // Write to card
 }
 
+//HAN NOTES can you explain what this method is doing?
 void loop()
 {
   while(pressureSensor.isConnected() == true) {
@@ -48,4 +55,7 @@ void loop()
     logFile.println(pressureSensor.getTemperature_degC()); // Get the temperature in degrees C
     delay(40); // Wait - 40 ms corresponds to the maximum update rate of the sensor (25 Hz)
   }
+    //HAN NOTES some note for when the pressuresensor is not connected or disconnects could go here
+  //NB that we are already in the loop method that will repeat itself and will need to move a servo at a specific time/pressure at some point
 }
+//HAN NOTES Now try and add in the servo code, and then the IMU example code...
