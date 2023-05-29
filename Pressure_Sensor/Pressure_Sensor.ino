@@ -57,7 +57,7 @@ void setup() {
 //HAN NOTES can you explain what this method is doing?
 // this method loops all the code within running it all in sequence
 void loop() {
-  Gyroscope.readDMPdataFromFIFO(&data);
+  Gyroscope.readDMPdataFromFIFO(&data); // Read a frame from the data
   while (basicSensor.isConnected() == true) {
 
     logFile.println("Time(ms), Pressure, Pressure Max, Pressure Min, Temperature, Temperature Max, Temperature Min, AccelerometerX, AccelerometerX Max, AccelerometerX Min, AccelerometerY, AccelerometerY Max, AccelerometerY Min, AccelerometerZ, AccelerometerZ Max, AccelerometerZ Min, GyroX, GyroX Max, GyroX Min, GyroY, GyroY Max, GyroY Min, GyroZ, GyroZ Max, GyroZ Min");
@@ -69,7 +69,7 @@ void loop() {
     // Don't know how i'll do temp max or min
     logFile.println(", ");
 
-    if ((data.header & DMP_header_bitmap_Accel) > 0)  // Check for Accel
+    if ((data.header & DMP_header_bitmap_Accel) > 0)  // Check for change in Accel
     {
       float acc_x = (float)data.Raw_Accel.Data.X;  // Extract the raw accelerometer data
       float acc_y = (float)data.Raw_Accel.Data.Y;
