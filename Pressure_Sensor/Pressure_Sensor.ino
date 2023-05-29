@@ -44,11 +44,11 @@ void setup() {
   {                      // File didn't exist.
     Serial.println("File Didn't exist");
     logFile.append(File);
-    logFile.println("// Begin File //");
+    logFile.println("Time(ms), Pressure, Pressure Max, Pressure Min, Temperature, Temperature Max, Temperature Min, AccelerometerX, AccelerometerX Max, AccelerometerX Min, AccelerometerY, AccelerometerY Max, AccelerometerY Min, AccelerometerZ, AccelerometerZ Max, AccelerometerZ Min, GyroX, GyroX Max, GyroX Min, GyroY, GyroY Max, GyroY Min, GyroZ, GyroZ Max, GyroZ Min");
   } else {  // File existed prior to script running
     Serial.println("File exists appending");
     logFile.append(File);
-    logFile.println("// New Session //");
+    logFile.println("Time(ms), Pressure, Pressure Max, Pressure Min, Temperature, Temperature Max, Temperature Min, AccelerometerX, AccelerometerX Max, AccelerometerX Min, AccelerometerY, AccelerometerY Max, AccelerometerY Min, AccelerometerZ, AccelerometerZ Max, AccelerometerZ Min, GyroX, GyroX Max, GyroX Min, GyroY, GyroY Max, GyroY Min, GyroZ, GyroZ Max, GyroZ Min");
   }
 
   logFile.syncFile();  // Write to card
@@ -57,10 +57,8 @@ void setup() {
 //HAN NOTES can you explain what this method is doing?
 // this method loops all the code within running it all in sequence
 void loop() {
-  Gyroscope.readDMPdataFromFIFO(&data); // Read a frame from the data
+  Gyroscope.readDMPdataFromFIFO(&data);  // Read a frame from the data
   while (basicSensor.isConnected() == true) {
-
-    logFile.println("Time(ms), Pressure, Pressure Max, Pressure Min, Temperature, Temperature Max, Temperature Min, AccelerometerX, AccelerometerX Max, AccelerometerX Min, AccelerometerY, AccelerometerY Max, AccelerometerY Min, AccelerometerZ, AccelerometerZ Max, AccelerometerZ Min, GyroX, GyroX Max, GyroX Min, GyroY, GyroY Max, GyroY Min, GyroZ, GyroZ Max, GyroZ Min");
 
     logFile.println(basicSensor.getPressure_hPa());  // Get the pressure reading in hPa
     logFile.println(", ");
