@@ -15,7 +15,6 @@ icm_20948_DMP_data_t data;
 String File = "data.csv";  // Name of text file
 String Dir = "WW-17237-Dir";
 const byte SRVPIN = 9;
-int pos = 0;  // store the servo's position
 
 //HAN NOTES can you explain what this method is doing?
 // this method is triggered on startup
@@ -25,7 +24,7 @@ void setup() {
   logFile.begin();            //Open connection to OpenLog
   basicSensor.begin();        // links to I2C port for the sensor
   chuteMotor.attach(SRVPIN);  // attaches the servo on pin byte (SRVPIN)
-
+  chuteMotor.write(0); 
   //HAN NOTES what is this if statement for?
   // Check the sensor is present
   if (basicSensor.isConnected() == false) {
@@ -94,5 +93,5 @@ void loop() {
 //HAN NOTES Now try and add in the servo code, and then the IMU example code...
 
 void chuteOpen() { // Method for opening the chute
-  
+  chuteMotor.write(90);  
 }
