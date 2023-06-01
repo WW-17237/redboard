@@ -26,7 +26,7 @@ void setup() {
   logFile.begin();            //Open connection to OpenLog
   basicSensor.begin();        // links to I2C port for the sensor
   chuteMotor.attach(SRVPIN);  // attaches the servo on pin byte (SRVPIN)
-  chuteMotor.write(0);
+  chuteMotor.write(0); // Reset the servo to 0 degrees
   //HAN NOTES what is this if statement for?
   // Check the sensor is present
   if (basicSensor.isConnected() == false) {
