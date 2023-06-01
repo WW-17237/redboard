@@ -14,7 +14,9 @@ icm_20948_DMP_data_t data;
 //HAN NOTES merit ticks for descriptive names remember
 String File = "data.csv";  // Name of text file
 String Dir = "WW-17237-Dir";
+float acc_z;
 const byte SRVPIN = 9;
+bool chuteDeployed = false;
 
 //HAN NOTES can you explain what this method is doing?
 // this method is triggered on startup
@@ -24,7 +26,7 @@ void setup() {
   logFile.begin();            //Open connection to OpenLog
   basicSensor.begin();        // links to I2C port for the sensor
   chuteMotor.attach(SRVPIN);  // attaches the servo on pin byte (SRVPIN)
-  chuteMotor.write(0); 
+  chuteMotor.write(0);
   //HAN NOTES what is this if statement for?
   // Check the sensor is present
   if (basicSensor.isConnected() == false) {
@@ -70,7 +72,7 @@ void loop() {
     {
       float acc_x = (float)data.Raw_Accel.Data.X;  // Extract the raw accelerometer data
       float acc_y = (float)data.Raw_Accel.Data.Y;
-      float acc_z = (float)data.Raw_Accel.Data.Z;
+      acc_z = (float)data.Raw_Accel.Data.Z;
 
       logFile.print(F("Accel: X:"));
       logFile.print(acc_x);
@@ -80,8 +82,8 @@ void loop() {
       logFile.println(acc_z);
     }
 
-    if (acc_z <= 0.2) {
-      chuteOpen()
+    if (acc_z <= 0.2) { // if accelleration is < 0.2 trigger chute
+      chuteOpen(); // Trigger servo method
     }
 
     delay(40);           // Wait - 40 ms corresponds to the maximum update rate of the sensor (25 Hz)
@@ -92,6 +94,9 @@ void loop() {
 }
 //HAN NOTES Now try and add in the servo code, and then the IMU example code...
 
-void chuteOpen() { // Method for opening the chute
-  chuteMotor.write(90);  
+void chuteOpen() {  // Method for opening the chute
+  if (!chuteDeployed) {
+    chuteMotor.write(90);
+    chuteDeployed = true;
+  }
 }
