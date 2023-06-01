@@ -81,7 +81,9 @@ void loop() {
       logFile.println(acc_z);
     }
 
-
+    if (acc_z <= 0.2) {
+      chuteOpen()
+    }
 
     delay(40);           // Wait - 40 ms corresponds to the maximum update rate of the sensor (25 Hz)
     logFile.syncFile();  // Write to card
@@ -90,3 +92,7 @@ void loop() {
   //NB that we are already in the loop method that will repeat itself and will need to move a servo at a specific time/pressure at some point
 }
 //HAN NOTES Now try and add in the servo code, and then the IMU example code...
+
+void chuteOpen() { // Method for opening the chute
+  
+}
