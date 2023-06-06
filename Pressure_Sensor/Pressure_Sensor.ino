@@ -7,18 +7,15 @@
 LPS25HB basicSensor;  // Create the object for the LPS25HB
 ICM_20948_I2C gyro;   // create an gyro object
 Servo chuteMotor;     // create servo object for control
-//HAN NOTES and what does creating an object let us do?
 OpenLog logFile;  // Create instance
 ICM_20948_I2C Gyroscope;
 icm_20948_DMP_data_t data;
-//HAN NOTES merit ticks for descriptive names remember
 String File = "data.csv";  // Name of text file
 String Dir = "WW-17237-Dir";
 float acc_z;
 const byte SRVPIN = 9;
 bool chuteDeployed = false;
 
-//HAN NOTES can you explain what this method is doing?
 // this method is triggered on startup
 void setup() {
   Serial.begin(9600);
@@ -27,7 +24,6 @@ void setup() {
   basicSensor.begin();        // links to I2C port for the sensor
   chuteMotor.attach(SRVPIN);  // attaches the servo on pin byte (SRVPIN)
   chuteMotor.write(0); // Reset the servo to 0 degrees
-  //HAN NOTES what is this if statement for?
   // Check the sensor is present
   if (basicSensor.isConnected() == false) {
     Serial.println("What did you do this time the pressure sensor is disconnected.");
@@ -55,7 +51,6 @@ void setup() {
   logFile.syncFile();  // Write to card
 }
 
-//HAN NOTES can you explain what this method is doing?
 // this method loops all the code within running it all in sequence
 void loop() {
   Gyroscope.readDMPdataFromFIFO(&data);  // Read a frame from the data
@@ -89,10 +84,7 @@ void loop() {
     delay(40);           // Wait - 40 ms corresponds to the maximum update rate of the sensor (25 Hz)
     logFile.syncFile();  // Write to card
   }
-  //HAN NOTES some note for when the pressuresensor is not connected or disconnects could go here
-  //NB that we are already in the loop method that will repeat itself and will need to move a servo at a specific time/pressure at some point
 }
-//HAN NOTES Now try and add in the servo code, and then the IMU example code...
 
 void chuteOpen() {  // Method for opening the chute
   if (!chuteDeployed) {
