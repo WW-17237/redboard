@@ -56,8 +56,10 @@ void setup() {
 
 // this method loops all the code within running it all in sequence
 void loop() {
+  //HAN NOTES I would suggest taking this chunk of code that deals with the sensors and having it in is own method like your servo
+  //HAN NOTES just to keep the code easier to read the order of things in the loop
   Gyroscope.readDMPdataFromFIFO(&data);  // Read a frame from the data
-  while (basicSensor.isConnected() == true) {
+  while (basicSensor.isConnected() == true) { //HAN NOTES what about the advanced IMU sensor? or do you have two of these if statements
 
     logFile.println(basicSensor.getPressure_hPa());  // Get the pressure reading in hPa
     logFile.println(", ");
@@ -134,6 +136,7 @@ void loop() {
     }
 
     delay(40);           // Wait - 40 ms corresponds to the maximum update rate of the sensor (25 Hz)
+   //HAN NOTES I would put this immediately after the last logFile line of code 
     logFile.syncFile();  // Write to card
   }
 }
