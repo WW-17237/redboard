@@ -34,7 +34,7 @@ void setup() {
     Serial.println("What did you do this time the pressure sensor is disconnected.");
     while (1);
   }
-
+//HAN NOTES this will set the max and min to the same value that will then cause issues in you if statements lower down?
   maxTemp = basicSensor.getTemperature_degC();
   minTemp = basicSensor.getTemperature_degC();
   maxPress = basicSensor.getPressure_hPa();
