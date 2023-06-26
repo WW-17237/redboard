@@ -80,7 +80,7 @@ void loop() {
 
 // Grab data from the Gyro
 void gyroData() {
-  Gyroscope.readDMPdataFromFIFO(&data);  // Read a frame from the data
+  Gyroscope.readDMPdataFromFIFO(&data);  // Read a frame from gyro
   acc_x = (float)data.Raw_Accel.Data.X;  // Extract the raw accelerometer data
   acc_y = (float)data.Raw_Accel.Data.Y;
   acc_z = (float)data.Raw_Accel.Data.Z;
@@ -121,19 +121,19 @@ void storeData() {
   logFile.print(",");
   logFile.print(minTemp);  // trip lowest temp
   logFile.print(",");
-  logFile.print(acc_x);
+  logFile.print(acc_x);  // Current acceleration on x axis
   logFile.print(",");
   //logFile.print(Gyroscope.getAccelXMax());
   logFile.print(",");
   //logFile.print(Gyroscope.getAccelXMin());
   logFile.print(",");
-  logFile.print(acc_y);
+  logFile.print(acc_y);  // Current acceleration on y axis
   logFile.print(",");
   //logFile.print(Gyroscope.getAccelYMax());
   logFile.print(",");
   //logFile.print(Gyroscope.getAccelYMin());
   logFile.print(",");
-  logFile.print(acc_z);
+  logFile.print(acc_z);  // Current acceleration on z axis
   logFile.print(",");
   //logFile.print(Gyroscope.getAccelZMax());
   logFile.print(",");
