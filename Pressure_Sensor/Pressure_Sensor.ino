@@ -18,6 +18,9 @@ float maxTemp;
 float minTemp;
 float maxPress;
 float minPress;
+double roll;
+double pitch;
+double yaw;
 const byte SRVPIN = 9;
 bool chuteDeployed = false;
 
@@ -32,7 +35,8 @@ void setup() {
   // Check the sensor is present
   if (basicSensor.isConnected() == false) {
     Serial.println("What did you do this time the pressure sensor is disconnected.");
-    while (1);
+    while (1)
+      ;
   }
   //HAN NOTES this will set the max and min to the same value that will then cause issues in you if statements lower down?
   maxTemp = basicSensor.getTemperature_degC();
@@ -49,12 +53,12 @@ void setup() {
   {                      // File didn't exist.
     Serial.println("File Didn't exist");
     logFile.append(File);
-    logFile.println("Time(ms), Pressure, Pressure Max, Pressure Min, Temperature, Temperature Max, Temperature Min, AccelerometerX, AccelerometerX Max, AccelerometerX Min, AccelerometerY, AccelerometerY Max, AccelerometerY Min, AccelerometerZ, AccelerometerZ Max, AccelerometerZ Min, GyroX, GyroX Max, GyroX Min, GyroY, GyroY Max, GyroY Min, GyroZ, GyroZ Max, GyroZ Min");
+    logFile.println("Time(ms), Pressure, Pressure Max, Pressure Min, Temperature, Temperature Max, Temperature Min, AccelerometerX, AccelerometerX Max, AccelerometerX Min, AccelerometerY, AccelerometerY Max, AccelerometerY Min, AccelerometerZ, AccelerometerZ Max, AccelerometerZ Min, Roll, GyroX Max, GyroX Min, Pitch, GyroY Max, GyroY Min, Yaw, GyroZ Max, GyroZ Min");
   } else {  // File existed prior to script running
     Serial.println("File exists wiping");
     logFile.removeFile(File);
     logFile.append(File);
-    logFile.println("Time(ms), Pressure, Pressure Max, Pressure Min, Temperature, Temperature Max, Temperature Min, AccelerometerX, AccelerometerX Max, AccelerometerX Min, AccelerometerY, AccelerometerY Max, AccelerometerY Min, AccelerometerZ, AccelerometerZ Max, AccelerometerZ Min, GyroX, GyroX Max, GyroX Min, GyroY, GyroY Max, GyroY Min, GyroZ, GyroZ Max, GyroZ Min");
+    logFile.println("Time(ms), Pressure, Pressure Max, Pressure Min, Temperature, Temperature Max, Temperature Min, AccelerometerX, AccelerometerX Max, AccelerometerX Min, AccelerometerY, AccelerometerY Max, AccelerometerY Min, AccelerometerZ, AccelerometerZ Max, AccelerometerZ Min, Roll, GyroX Max, GyroX Min, Pitch, GyroY Max, GyroY Min, Yaw, GyroZ Max, GyroZ Min");
   }
 
   logFile.syncFile();  // Write to card
@@ -79,10 +83,33 @@ void loop() {
 
 // Grab data from the Gyro
 void gyroData() {
-  Gyroscope.readDMPdataFromFIFO(&data);  // Read a frame from gyro
-  acc_x = (float)data.Raw_Accel.Data.X;  // Extract the raw accelerometer data
-  acc_y = (float)data.Raw_Accel.Data.Y;
-  acc_z = (float)data.Raw_Accel.Data.Z;
+  Gyroscope.readDMPdataFromFIFO(&data);             // Read a frame from gyro
+  if ((data.header & DMP_header_bitmap_Quat6) > 0)  // We have asked for GRV data so we should receive Quat6
+  {
+    // Scale to +/- 1
+    double q1 = ((double)data.Quat6.Data.Q1) / 1073741824.0;  // Convert to double. Divide by 2^30
+    double q2 = ((double)data.Quat6.Data.Q2) / 1073741824.0;  // Convert to double. Divide by 2^30
+    double q3 = ((double)data.Quat6.Data.Q3) / 1073741824.0;  // Convert to double. Divide by 2^30
+    double q0 = sqrt(1.0 - ((q1 * q1) + (q2 * q2) + (q3 * q3)));
+    double q2sqr = q2 * q2;
+    // roll (x-axis rotation)
+    double t0 = +2.0 * (q0 * q1 + q2 * q3);
+    double t1 = +1.0 - 2.0 * (q1 * q1 + q2sqr);
+    double roll = atan2(t0, t1) * 180.0 / PI;
+    // pitch (y-axis rotation)
+    double t2 = +2.0 * (q0 * q2 - q3 * q1);
+    t2 = t2 > 1.0 ? 1.0 : t2;
+    t2 = t2 < -1.0 ? -1.0 : t2;
+    double pitch = asin(t2) * 180.0 / PI;
+    // yaw (z-axis rotation)
+    double t3 = +2.0 * (q0 * q3 + q1 * q2);
+    double t4 = +1.0 - 2.0 * (q2sqr + q3 * q3);
+    double yaw = atan2(t3, t4) * 180.0 / PI;
+
+    acc_x = (float)data.Raw_Accel.Data.X;  // Extract the raw accelerometer data
+    acc_y = (float)data.Raw_Accel.Data.Y;
+    acc_z = (float)data.Raw_Accel.Data.Z;
+  }
 }
 
 void cacheMinMax() {
@@ -138,19 +165,19 @@ void storeData() {
   logFile.print(",");
   //logFile.print(Gyroscope.getAccelZMin());
   logFile.print(",");
-  //logFile.print(gyroX);
+  logFile.print(roll);
   logFile.print(",");
   //logFile.print(Gyroscope.getGyroXMax());
   logFile.print(",");
   //logFile.print(Gyroscope.getGyroXMin());
   logFile.print(",");
-  //logFile.print(gyroY);
+  logFile.print(pitch);
   logFile.print(",");
   //logFile.print(Gyroscope.getGyroYMax());
   logFile.print(",");
   //logFile.print(Gyroscope.getGyroYMin());
   logFile.print(",");
-  //logFile.print(gyroZ);
+  logFile.print(yaw);
   logFile.print(",");
   //logFile.print(Gyroscope.getGyroZMax());
   logFile.print(",");
