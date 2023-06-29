@@ -33,10 +33,8 @@ void setup() {
       ;
   }
   //HAN NOTES this will set the max and min to the same value that will then cause issues in you if statements lower down?
-  maxTemp = basicSensor.getTemperature_degC();
-  minTemp = basicSensor.getTemperature_degC();
-  maxPress = basicSensor.getPressure_hPa();
-  minPress = basicSensor.getPressure_hPa();
+  maxTemp , minTemp = basicSensor.getTemperature_degC();
+  maxPress , minPress = basicSensor.getPressure_hPa();
 
   logFile.changeDirectory("..");  //Make sure we're in the root directory
   logFile.makeDirectory(Dir);     // Create directory
