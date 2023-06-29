@@ -11,10 +11,10 @@ ICM_20948_I2C Gyroscope;
 icm_20948_DMP_data_t data;  // create gyro object
 String File = "data.csv";   // Name of text file
 String Dir = "WW-17237-Dir";
-float acc_z , acc_y , acc_x; // Acceleration floats
-double roll , pitch , yaw; // Euler angle doubles
-float maxTemp , minTemp; // MinMax temperature floats
-float maxPress , minPress; // MinMax pressure floats
+float acc_z, acc_y, acc_x;  // Acceleration floats
+double roll, pitch, yaw;    // Euler angle doubles
+float maxTemp, minTemp;     // MinMax temperature floats
+float maxPress, minPress;   // MinMax pressure floats
 const byte SRVPIN = 9;
 bool chuteDeployed = false;
 
