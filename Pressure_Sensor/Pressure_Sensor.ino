@@ -53,19 +53,17 @@ void setup() {
     logFile.println("Time(ms), Pressure, Pressure Max, Pressure Min, Temperature, Temperature Max, Temperature Min, AccelerometerX, AccelerometerX Max, AccelerometerX Min, AccelerometerY, AccelerometerY Max, AccelerometerY Min, AccelerometerZ, AccelerometerZ Max, AccelerometerZ Min, Roll, GyroX Max, GyroX Min, Pitch, GyroY Max, GyroY Min, Yaw, GyroZ Max, GyroZ Min");
   }
 
-  logFile.syncFile();  // Write to card
+  logFile.syncFile();  // Write to card //HAN NOTES it just pauses here to check that any r/w has finished before moving on
 }
 
 // this method loops all the code within running it all in sequence
 void loop() {
-  //HAN NOTES I would suggest taking this chunk of code that deals with the sensors and having it in is own method like your servo
-  //HAN NOTES just to keep the code easier to read the order of things in the loop
   while (basicSensor.isConnected() && Gyroscope.isConnected()) {  //HAN NOTES what about the advanced IMU sensor? or do you have two of these if statements
     gyroData();
     cacheMinMax();
     storeData();
 
-    if (acc_z <= 0.2) {  // if accelleration is < 0.2 trigger chute
+    if (acc_z <= 0.2) {  // if acceleration is < 0.2 trigger chute
       chuteOpen();       // Trigger servo method
     }
 
@@ -73,7 +71,7 @@ void loop() {
   }
 }
 
-// Grab data from the Gyro
+// Grab data from the Gyro //HAN NOTES and what does it do with it?
 void gyroData() {
   Gyroscope.readDMPdataFromFIFO(&data);             // Read a frame from gyro
   if ((data.header & DMP_header_bitmap_Quat6) > 0)  // We have asked for GRV data so we should receive Quat6
@@ -104,6 +102,7 @@ void gyroData() {
   }
 }
 
+//HAN NOTES what does this method do?
 void cacheMinMax() {
   // Get max temp if the current temp is higher update max temp
   if (maxTemp < basicSensor.getTemperature_degC()) {
@@ -125,6 +124,7 @@ void cacheMinMax() {
   }
 }
 
+//HAN NOTES what does this method do?
 void storeData() {
   // Write sensor data to CSV file
   logFile.println(basicSensor.getPressure_hPa());  // Get the pressure reading in hPa
@@ -177,7 +177,8 @@ void storeData() {
   logFile.syncFile();  // Write to card
 }
 
-void chuteOpen() {  // Method for opening the chute
+// Method for opening the chute
+void chuteOpen() {  
   if (!chuteDeployed) {
     chuteDeployed = true;
     chuteMotor.write(90);
