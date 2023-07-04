@@ -58,7 +58,7 @@ void setup() {
 
 // this method loops all the code within running it all in sequence
 void loop() {
-  while (basicSensor.isConnected() && Gyroscope.isConnected()) {  //HAN NOTES what about the advanced IMU sensor? or do you have two of these if statements
+  while (basicSensor.isConnected() && Gyroscope.isConnected()) {
     gyroData();
     cacheMinMax();
     storeData();
@@ -71,7 +71,7 @@ void loop() {
   }
 }
 
-// Grab data from the Gyro //HAN NOTES and what does it do with it?
+// Grab data from the Gyro and stores it in variables for later use //HAN NOTES and what does it do with it?
 void gyroData() {
   Gyroscope.readDMPdataFromFIFO(&data);             // Read a frame from gyro
   if ((data.header & DMP_header_bitmap_Quat6) > 0)  // We have asked for GRV data so we should receive Quat6
@@ -102,7 +102,7 @@ void gyroData() {
   }
 }
 
-//HAN NOTES what does this method do?
+// This method stores all the maximum and minimum values for temperature and pressure
 void cacheMinMax() {
   // Get max temp if the current temp is higher update max temp
   if (maxTemp < basicSensor.getTemperature_degC()) {
@@ -124,7 +124,7 @@ void cacheMinMax() {
   }
 }
 
-//HAN NOTES what does this method do?
+// This method prints all the data to a csv file
 void storeData() {
   // Write sensor data to CSV file
   logFile.println(basicSensor.getPressure_hPa());  // Get the pressure reading in hPa
